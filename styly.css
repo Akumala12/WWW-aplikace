@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.hidden {
+    display: none;
+}
+
+.menu {
+    text-align: center;
+}
+
+.menu button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu button:hover {
+    background-color: #ddd;
+}
+
+/* Flex container for game area */
+#game {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    flex: 2; /* Takes more space compared to info panel */
+}
+
+.board div {
+    background-color: white;
+    width: 100%;
+    padding-top: 100%; /* Keeps cards square */
+    position: relative;
+}
+
+.board div::after {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.info-panel {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    flex: 1; /* Takes less space compared to board */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.info-panel h2 {
+    margin-top: 0;
+}
