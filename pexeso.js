@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const infoPanel = document.getElementById("infoPanel");
     const twoPlayerInfo = document.getElementById("twoPlayerInfo");
     const scoreElement = document.getElementById("score");
+    const restart = document.getElementById("restart");
+    const back = document.getElementById("back");
 
     let score = 0;
     let firstCard = null;
@@ -31,7 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
     twoPlayersBtn.addEventListener("click", () => {
         menu.classList.add("hidden");
         twoPlayerInfo.classList.remove("hidden");
+        initializeBoard();
     });
+
+    restart.addEventListener("click", () => {
+        score = 0;
+        scoreElement.textContent = score;
+        initializeBoard(); // Restartuje hru
+    });
+
+    back.addEventListener("click", () => {
+        game.classList.add("hidden");
+        infoPanel.classList.add("hidden");
+        menu.classList.remove("hidden"); // Zobrazí zpět menu
+        board.innerHTML = ""; 
+    });
+
 
     function initializeBoard() {
         board.innerHTML = ""; // Reset board
