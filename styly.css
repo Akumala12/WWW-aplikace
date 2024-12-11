@@ -4,9 +4,9 @@ body {
     background-color: black;
     color: white;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    height: 100vh;
+    height: 100%;
 }
 
 .hidden {
@@ -42,30 +42,28 @@ body {
     gap: 20px;
     justify-content: center;
     align-items: flex-start;
-    width: 100%;
-    max-width: 800px;
+    width: 1200px;
+    margin-top: 20px;
 }
 
 .board {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     gap: 10px;
-    width: 80vw; 
-    max-width: 600px; 
+    width: 1200px; 
     margin: 0 auto; 
+    padding-left: 20px;
 }
 
 .board div {
     background-color: white;
-    width: 100%;
-    padding-top: 100%; 
     position: relative;
 }
 
 .board div::after {
     content: "";
     display: block;
-    padding-top: 100%;
 }
 
 #infoPanel {
@@ -133,7 +131,7 @@ body {
 
 .card .front-face {
     background-color: #fff;
-      background-size: cover; 
+      background-size: contain;  
     background-position: center; 
     transform: rotateY(180deg);
   
@@ -151,4 +149,15 @@ body {
 
 .card.flipped .back-face {
     transform: rotateY(180deg); 
+}
+
+/*Dva hráči */
+#playerScores {
+    margin-top: 20px; 
+    text-align: left;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
 }

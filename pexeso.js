@@ -18,8 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const images = [
         "Obr/Obr1.png", "Obr/Obr2.png", "Obr/Obr3.png", "Obr/Obr4.png", "Obr/Obr5.png",
         "Obr/Obr6.png", "Obr/Obr7.png", "Obr/Obr8.png", "Obr/Obr9.png", "Obr/Obr10.png",
+        "Obr/Obr11.png", "Obr/Obr12.png", "Obr/Obr13.png", "Obr/Obr14.png", "Obr/Obr15.png",
+        "Obr/Obr16.png", "Obr/Obr17.png", "Obr/Obr18.png", "Obr/Obr19.png", "Obr/Obr20.png","Obr/Obr21.png",
         "Obr/Obr1.png", "Obr/Obr2.png", "Obr/Obr3.png", "Obr/Obr4.png", "Obr/Obr5.png",
-        "Obr/Obr6.png", "Obr/Obr7.png", "Obr/Obr8.png", "Obr/Obr9.png", "Obr/Obr10.png"
+        "Obr/Obr6.png", "Obr/Obr7.png", "Obr/Obr8.png", "Obr/Obr9.png", "Obr/Obr10.png", 
+        "Obr/Obr11.png", "Obr/Obr12.png", "Obr/Obr13.png", "Obr/Obr14.png", "Obr/Obr15.png",
+        "Obr/Obr16.png", "Obr/Obr17.png", "Obr/Obr18.png", "Obr/Obr19.png", "Obr/Obr20.png", "Obr/Obr21.png"
     ];
 
     onePlayerBtn.addEventListener("click", () => {
@@ -32,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     twoPlayersBtn.addEventListener("click", () => {
         menu.classList.add("hidden");
+        game.classList.remove("hidden");
         twoPlayerInfo.classList.remove("hidden");
         initializeBoard();
     });
@@ -45,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     back.addEventListener("click", () => {
         game.classList.add("hidden");
         infoPanel.classList.add("hidden");
-        menu.classList.remove("hidden"); // Zobrazí zpět menu
+        menu.classList.remove("hidden"); 
         board.innerHTML = ""; 
     });
 
