@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let firstCard = null;
     let secondCard = null;
     let lockBoard = false;
+    let matchedCards = [];
 
     const images = [
         "Obr/Obr1.png", "Obr/Obr2.png", "Obr/Obr3.png", "Obr/Obr4.png", "Obr/Obr5.png",
@@ -26,10 +27,26 @@ document.addEventListener("DOMContentLoaded", () => {
         "Obr/Obr16.png", "Obr/Obr17.png", "Obr/Obr18.png", "Obr/Obr19.png", "Obr/Obr20.png", "Obr/Obr21.png"
     ];
 
+    function saveGameState() {
+        localStorage.setItem("Stav", JSON.stringify({ matchedCards, score }));
+    }
+
+    function loadGameState() {
+        const savedState = JSON.parse(localStorage.getItem("Stav"));
+        if (savedState) {
+            score = savedState.score || 0;
+            matchedCards = savedState.matchedCards || [];
+            scoreElement.textContent = score;
+        } else {
+            matchedCards = [];
+        }
+    }
+
     onePlayerBtn.addEventListener("click", () => {
         menu.classList.add("hidden");
         game.classList.remove("hidden");
         infoPanel.classList.remove("hidden")
+        loadGameState();
         initializeBoard();
     });
     
@@ -42,7 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     restart.addEventListener("click", () => {
+        localStorage.removeItem("Stav");
         score = 0;
+        matchedCards = [];
         scoreElement.textContent = score;
         initializeBoard(); // Restartuje hru
     });
@@ -57,9 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initializeBoard() {
         board.innerHTML = ""; // Reset board
-        const shuffledImages = images.sort(() => Math.random() - 0.5); // Shuffle images
+        const shuffledImages = images.sort(() => Math.random() - 0.5); //  Michání karet
         shuffledImages.forEach((image) => {
             const card = createCard(image);
+            if (matchedCards.includes(image)) {
+                card.style.visibility = "hidden"; // Skryje nalezené karty
+            }
             board.appendChild(card);
         });
         
@@ -103,27 +125,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const isMatch = firstCard.dataset.image === secondCard.dataset.image;
         if (isMatch) {
-            disableCards();
-            updateScore();
+            matchedCards.push(firstCard.dataset.image);
+            setTimeout(() => {
+                firstCard.style.visibility = "hidden"; // Skryje  karty
+                secondCard.style.visibility = "hidden";
+                updateScore();
+                resetBoard();
+                saveGameState();
+            }, 500);
         } else {
-            unflipCards();
+            setTimeout(() => {
+                firstCard.classList.remove("flipped");
+                secondCard.classList.remove("flipped");
+                resetBoard();
+            }, 1000);
         }
-    }
-
-    function disableCards() {
-        setTimeout(() => {
-            firstCard.style.visibility = "hidden";
-            secondCard.style.visibility = "hidden";
-            resetBoard();
-        }, 1000);
-    }
-
-    function unflipCards() {
-        setTimeout(() => {
-            firstCard.classList.remove("flipped");
-            secondCard.classList.remove("flipped");
-            resetBoard();
-        }, 1000);
     }
 
     function resetBoard() {
