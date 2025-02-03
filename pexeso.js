@@ -5,8 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const game = document.getElementById("game");
     const board = document.getElementById("board");
     const infoPanel = document.getElementById("infoPanel");
-    const twoPlayerInfo = document.getElementById("twoPlayerInfo");
+    const playerScores = document.getElementById("playerScores");
     const scoreElement = document.getElementById("score");
+    const player1ScoreElement = document.getElementById("player1Score");
+    const player2ScoreElement = document.getElementById("player2Score");
+    const currentPlayerElement = document.getElementById("currentPlayer");
     const restart = document.getElementById("restart");
     const back = document.getElementById("back");
 
@@ -15,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let secondCard = null;
     let lockBoard = false;
     let matchedCards = [];
+    let isTwoPlayerMode = false;
+    let currentPlayer = 1;
+    let playerScoresData = { 1: 0, 2: 0 };
 
     const images = [
         "Obr/Obr1.png", "Obr/Obr2.png", "Obr/Obr3.png", "Obr/Obr4.png", "Obr/Obr5.png",
@@ -28,42 +34,67 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     function saveGameState() {
-        localStorage.setItem("Stav", JSON.stringify({ matchedCards, score }));
+        localStorage.setItem("Stav", JSON.stringify({ matchedCards, score, isTwoPlayerMode,
+            currentPlayer,  playerScoresData }));
     }
-
     function loadGameState() {
         const savedState = JSON.parse(localStorage.getItem("Stav"));
         if (savedState) {
             score = savedState.score || 0;
             matchedCards = savedState.matchedCards || [];
-            scoreElement.textContent = score;
+            isTwoPlayerMode = savedState.isTwoPlayerMode || false;
+            currentPlayer = savedState.currentPlayer || 1;
+            playerScoresData = savedState.playerScoresData || { 1: 0, 2: 0 };
+            updateInfoPanel();
+
         } else {
             matchedCards = [];
         }
     }
 
     onePlayerBtn.addEventListener("click", () => {
-        menu.classList.add("hidden");
-        game.classList.remove("hidden");
-        infoPanel.classList.remove("hidden")
-        loadGameState();
-        initializeBoard();
+        isTwoPlayerMode = false;
+        startGame();
+        updateInfoPanel(); // Aktualizace panelu ihned po výběru režimu
     });
     
-
     twoPlayersBtn.addEventListener("click", () => {
+        isTwoPlayerMode = true;
+        startGame();
+        updateInfoPanel(); // Aktualizace panelu ihned po výběru režimu
+    });
+    
+    function updateInfoPanel() {
+        scoreElement.textContent = score;
+        player1ScoreElement.textContent = playerScoresData[1];
+        player2ScoreElement.textContent = playerScoresData[2];
+        currentPlayerElement.textContent = `Hráč ${currentPlayer}`;
+    
+        // Zobrazení skóre pro oba hráče pouze v režimu 2 hráčů
+        if (isTwoPlayerMode) {
+            playerScores.style.display = "block";
+        } else {
+            playerScores.style.display = "none";
+        }
+    }
+    function startGame() {
         menu.classList.add("hidden");
         game.classList.remove("hidden");
-        twoPlayerInfo.classList.remove("hidden");
+        infoPanel.classList.remove("hidden");
+
+        loadGameState();
         initializeBoard();
-    });
+    }
+
 
     restart.addEventListener("click", () => {
         localStorage.removeItem("Stav");
         score = 0;
         matchedCards = [];
-        scoreElement.textContent = score;
-        initializeBoard(); // Restartuje hru
+        playerScoresData = { 1: 0, 2: 0 };
+        currentPlayer = 1;
+        updateInfoPanel();
+        initializeBoard(); 
     });
 
     back.addEventListener("click", () => {
@@ -137,9 +168,16 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 firstCard.classList.remove("flipped");
                 secondCard.classList.remove("flipped");
+                if (isTwoPlayerMode) switchPlayer();
                 resetBoard();
             }, 1000);
         }
+    }
+    
+    function switchPlayer() {
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+        currentPlayerElement.textContent = `Hráč ${currentPlayer}`;
+        saveGameState();
     }
 
     function resetBoard() {
@@ -148,7 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateScore() {
-        score++;
-        scoreElement.textContent = score;
+        if (isTwoPlayerMode) {
+            playerScoresData[currentPlayer]++;
+            document.getElementById(`player${currentPlayer}Score`).textContent = playerScoresData[currentPlayer];
+        } else {
+            score++;
+            scoreElement.textContent = score;
+        }
     }
 });
