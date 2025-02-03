@@ -72,9 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
         // Zobrazení skóre pro oba hráče pouze v režimu 2 hráčů
         if (isTwoPlayerMode) {
-            playerScores.style.display = "block";
+            playerScores.classList.add("visible");
         } else {
-            playerScores.style.display = "none";
+            playerScores.classList.remove("visible");
         }
     }
     function startGame() {
@@ -189,6 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isTwoPlayerMode) {
             playerScoresData[currentPlayer]++;
             document.getElementById(`player${currentPlayer}Score`).textContent = playerScoresData[currentPlayer];
+            score++;
+            scoreElement.textContent = score;
         } else {
             score++;
             scoreElement.textContent = score;
